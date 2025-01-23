@@ -1,0 +1,24 @@
+{
+  "name": "web5_",
+  "version": "1.0.0",
+  "description": "Unity WebGL server for Render",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Katrinvfx/gamebot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Katrinvfx/gamebot/issues"
+  },
+  "homepage": "https://github.com/Katrinvfx/gamebot#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
+
