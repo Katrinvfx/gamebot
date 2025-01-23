@@ -28,6 +28,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        touch-action: none; /* Отключаем стандартные действия браузера для касаний */
       }
     </style>
   </head>
@@ -35,14 +36,40 @@
     <canvas id="unity-canvas" width="600" height="1080" tabindex="-1"></canvas>
     <script src="Build/web5_.loader.js"></script>
     <script>
-      // Инициализация Telegram WebApp API
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.disableScrolling(); // Отключает прокрутку
-        window.Telegram.WebApp.disableVerticalSwipes(); // Отключает вертикальные свайпы
-        window.Telegram.WebApp.disableHorizontalSwipes(); // Отключает горизонтальные свайпы
+      function preventDefaultTouchActions() {
+        document.addEventListener("touchmove", (e) => {
+          e.preventDefault(); // Отключаем прокрутку и стандартные действия
+        }, { passive: false }); // Указываем, что обработчик может предотвратить стандартное действие
+      }
+
+      function resizeCanvasToAspect(canvas) {
+        const aspectRatio = 600 / 1080; // Пропорции канваса
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        if (windowWidth / windowHeight > aspectRatio) {
+          // Экран шире, чем 9:16 — ограничиваем по высоте
+          canvas.style.width = `${windowHeight * aspectRatio}px`;
+          canvas.style.height = `${windowHeight}px`;
+        } else {
+          // Экран выше, чем 9:16 — ограничиваем по ширине
+          canvas.style.width = `${windowWidth}px`;
+          canvas.style.height = `${windowWidth / aspectRatio}px`;
+        }
       }
 
       const canvas = document.querySelector("#unity-canvas");
+
+      // Первоначальное масштабирование канваса
+      resizeCanvasToAspect(canvas);
+
+      // Отключение стандартных touch-обработчиков браузера
+      preventDefaultTouchActions();
+
+      // Изменение размеров канваса при изменении размеров окна
+      window.addEventListener("resize", () => {
+        resizeCanvasToAspect(canvas);
+      });
 
       // Создаём экземпляр Unity
       createUnityInstance(canvas, {
