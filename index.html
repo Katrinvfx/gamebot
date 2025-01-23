@@ -28,7 +28,6 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        touch-action: none; /* Отключаем стандартные действия браузера для касаний */
       }
     </style>
   </head>
@@ -36,31 +35,14 @@
     <canvas id="unity-canvas" width="600" height="1080" tabindex="-1"></canvas>
     <script src="Build/web5_.loader.js"></script>
     <script>
-      function preventLongTouchActions(canvas) {
-        // Отключаем стандартные действия при касании
-        canvas.addEventListener("touchstart", (e) => {
-          if (e.touches.length === 1) {
-            e.preventDefault();
-          }
-        }, { passive: false });
-
-        canvas.addEventListener("touchmove", (e) => {
-          if (e.touches.length === 1) {
-            e.preventDefault(); // Блокируем стандартное поведение при перетаскивании
-          }
-        }, { passive: false });
-
-        canvas.addEventListener("touchend", (e) => {
-          if (e.touches.length === 0) {
-            e.preventDefault(); // Завершаем обработку касания
-          }
-        }, { passive: false });
+      // Инициализация Telegram WebApp API
+      if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.disableScrolling(); // Отключает прокрутку
+        window.Telegram.WebApp.disableVerticalSwipes(); // Отключает вертикальные свайпы
+        window.Telegram.WebApp.disableHorizontalSwipes(); // Отключает горизонтальные свайпы
       }
 
       const canvas = document.querySelector("#unity-canvas");
-
-      // Отключаем стандартные touch-обработчики для долгих касаний
-      preventLongTouchActions(canvas);
 
       // Создаём экземпляр Unity
       createUnityInstance(canvas, {
