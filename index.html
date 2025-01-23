@@ -33,43 +33,34 @@
     </style>
   </head>
   <body>
-    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
+    <canvas id="unity-canvas" width="600" height="1080" tabindex="-1"></canvas>
     <script src="Build/web5_.loader.js"></script>
     <script>
-      function preventDefaultTouchActions() {
-        document.addEventListener("touchmove", (e) => {
-          e.preventDefault(); // Отключаем прокрутку и стандартные действия
-        }, { passive: false }); // Указываем, что обработчик может предотвратить стандартное действие
-      }
+      function preventLongTouchActions(canvas) {
+        // Отключаем стандартные действия при касании
+        canvas.addEventListener("touchstart", (e) => {
+          if (e.touches.length === 1) {
+            e.preventDefault();
+          }
+        }, { passive: false });
 
-      function resizeCanvasToAspect(canvas) {
-        const aspectRatio = 600 / 1080; // Пропорции канваса
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+        canvas.addEventListener("touchmove", (e) => {
+          if (e.touches.length === 1) {
+            e.preventDefault(); // Блокируем стандартное поведение при перетаскивании
+          }
+        }, { passive: false });
 
-        if (windowWidth / windowHeight > aspectRatio) {
-          // Экран шире, чем 9:16 — ограничиваем по высоте
-          canvas.style.width = `${windowHeight * aspectRatio}px`;
-          canvas.style.height = `${windowHeight}px`;
-        } else {
-          // Экран выше, чем 9:16 — ограничиваем по ширине
-          canvas.style.width = `${windowWidth}px`;
-          canvas.style.height = `${windowWidth / aspectRatio}px`;
-        }
+        canvas.addEventListener("touchend", (e) => {
+          if (e.touches.length === 0) {
+            e.preventDefault(); // Завершаем обработку касания
+          }
+        }, { passive: false });
       }
 
       const canvas = document.querySelector("#unity-canvas");
 
-      // Первоначальное масштабирование канваса
-      resizeCanvasToAspect(canvas);
-
-      // Отключение стандартных touch-обработчиков браузера
-      preventDefaultTouchActions();
-
-      // Изменение размеров канваса при изменении размеров окна
-      window.addEventListener("resize", () => {
-        resizeCanvasToAspect(canvas);
-      });
+      // Отключаем стандартные touch-обработчики для долгих касаний
+      preventLongTouchActions(canvas);
 
       // Создаём экземпляр Unity
       createUnityInstance(canvas, {
