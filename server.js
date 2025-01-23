@@ -4,21 +4,16 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Устанавливаем заголовки для Gzip-файлов
-app.get("*.js.gz", (req, res, next) => {
-    res.set("Content-Encoding", "gzip");
-    res.set("Content-Type", "application/javascript");
-    next();
+// Указываем, что index.html лежит в корне проекта
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.get("*.wasm.gz", (req, res, next) => {
-    res.set("Content-Encoding", "gzip");
-    res.set("Content-Type", "application/wasm");
-    next();
-});
+// Указываем папку со статическими файлами Unity WebGL
+app.use("/Build", express.static(path.join(__dirname, "Build")));
 
-app.use(express.static(path.join(__dirname, "Build")));
-
+// Запуск сервера
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
+
