@@ -1,24 +1,20 @@
 {
-  "name": "web5_",
+  "name": "unity-webgl-gzip",
   "version": "1.0.0",
-  "description": "Unity WebGL server for Render",
+  "description": "Unity WebGL server with gzip compression",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Katrinvfx/gamebot.git"
+    "url": "https://github.com/your-repo-url.git"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Katrinvfx/gamebot/issues"
-  },
-  "homepage": "https://github.com/Katrinvfx/gamebot#readme",
-  "dependencies": {
-    "express": "^4.21.2"
-  }
+  "license": "ISC"
 }
 

@@ -6,8 +6,8 @@
     <title>Unity WebGL Player | NaytLayt_interactiveGallery</title>
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1" style="width: 1080px; height: 1920px; background: #231F20"></canvas>
-    <script src="Build/web5_.loader.js"></script>
+    <canvas id="unity-canvas" width=600 height=1080 tabindex="-1" style="width: 600px; height: 1080px; background: #231F20"></canvas>
+    <script src="Build/Новая папка.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -25,9 +25,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/web5_.data",
-        frameworkUrl: "Build/web5_.framework.js",
-        codeUrl: "Build/web5_.wasm",
+        dataUrl: "Build/Новая папка.data.unityweb",
+        frameworkUrl: "Build/Новая папка.framework.js.unityweb",
+        codeUrl: "Build/Новая папка.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "NaytLayt",
         productName: "NaytLayt_interactiveGallery",
