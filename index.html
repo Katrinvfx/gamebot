@@ -31,9 +31,17 @@
         touch-action: none; /* Отключаем стандартные действия браузера для касаний */
       }
     </style>
+<script>
+      // Настройка свайпов и прокрутки через Telegram WebApp API
+      if (window.Telegram && window.Telegram.WebApp) {
+       // window.Telegram.WebApp.disableScrolling(); // Отключаем прокрутку
+        window.Telegram.WebApp.disableVerticalSwipes(); // Отключаем вертикальные свайпы
+        window.Telegram.WebApp.disableHorizontalSwipes(); // Отключаем горизонтальные свайпы
+      }
+    </script>
   </head>
   <body>
-    <canvas id="unity-canvas" width="600" height="1080" tabindex="-1"></canvas>
+    <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
     <script src="Build/web5_.loader.js"></script>
     <script>
       function preventDefaultTouchActions() {
