@@ -11,8 +11,8 @@
         padding: 0;
         border: 0;
         margin: 0;
-        background: black; /* Фон страницы */
-        overflow: hidden; /* Отключаем прокрутку страницы */
+        background: black;
+        overflow: hidden;
       }
 
       canvas {
@@ -21,66 +21,49 @@
         height: auto;
         max-width: 100vw;
         max-height: 100vh;
-        aspect-ratio: 600 / 1080; /* Пропорции канваса */
+        aspect-ratio: 600 / 1080;
         display: block;
         margin: auto;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        touch-action: none; /* Отключаем стандартные действия браузера для касаний */
+        touch-action: none;
       }
     </style>
-<script>
-      // Настройка свайпов и прокрутки через Telegram WebApp API
-      if (window.Telegram && window.Telegram.WebApp) {
-       // window.Telegram.WebApp.disableScrolling(); // Отключаем прокрутку
-        window.Telegram.WebApp.disableVerticalSwipes(); // Отключаем вертикальные свайпы
-        window.Telegram.WebApp.disableHorizontalSwipes(); // Отключаем горизонтальные свайпы
-      }
-    </script>
   </head>
   <body>
     <canvas id="unity-canvas" width="1080" height="1920" tabindex="-1"></canvas>
     <script src="Build/web5_.loader.js"></script>
     <script>
-      function preventDefaultTouchActions() {
-        document.addEventListener("touchmove", (e) => {
-          e.preventDefault(); // Отключаем прокрутку и стандартные действия
-        }, { passive: false }); // Указываем, что обработчик может предотвратить стандартное действие
+      // Проверяем, является ли устройство мобильным
+      function isMobileDevice() {
+        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
       }
 
-      function resizeCanvasToAspect(canvas) {
-        const aspectRatio = 600 / 1080; // Пропорции канваса
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+      if (isMobileDevice()) {
+        // Блокируем перемещения пальцем
+        document.addEventListener(
+          "touchmove",
+          (e) => {
+            if (e.touches.length === 1) {
+              e.preventDefault(); // Блокируем перемещение
+            }
+          },
+          { passive: false }
+        );
 
-        if (windowWidth / windowHeight > aspectRatio) {
-          // Экран шире, чем 9:16 — ограничиваем по высоте
-          canvas.style.width = `${windowHeight * aspectRatio}px`;
-          canvas.style.height = `${windowHeight}px`;
-        } else {
-          // Экран выше, чем 9:16 — ограничиваем по ширине
-          canvas.style.width = `${windowWidth}px`;
-          canvas.style.height = `${windowWidth / aspectRatio}px`;
-        }
+        // Оставляем клики активными
+        document.addEventListener("touchstart", (e) => {
+          console.log("Клик одним пальцем зарегистрирован");
+        });
+
+        document.addEventListener("click", (e) => {
+          console.log("Клик зарегистрирован через click");
+        });
       }
 
-      const canvas = document.querySelector("#unity-canvas");
-
-      // Первоначальное масштабирование канваса
-      resizeCanvasToAspect(canvas);
-
-      // Отключение стандартных touch-обработчиков браузера
-      preventDefaultTouchActions();
-
-      // Изменение размеров канваса при изменении размеров окна
-      window.addEventListener("resize", () => {
-        resizeCanvasToAspect(canvas);
-      });
-
-      // Создаём экземпляр Unity
-      createUnityInstance(canvas, {
+      createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/web5_.data.unityweb",
         frameworkUrl: "Build/web5_.framework.js.unityweb",
         codeUrl: "Build/web5_.wasm.unityweb",
